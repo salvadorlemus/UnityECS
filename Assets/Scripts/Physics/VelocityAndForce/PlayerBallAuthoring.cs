@@ -14,6 +14,7 @@ public class PlayerBallAuthoring : MonoBehaviour
         // Override the Bake method to create the entity and add the components
         public override void Bake(PlayerBallAuthoring authoring)
         {
+            // Returns the primary Entity
             Entity playerBallEntity = GetEntity(TransformUsageFlags.None);
 
             // Adds a BallComponent component to the created entity.
