@@ -1,5 +1,4 @@
 using Unity.Entities;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class PlayerBallAuthoring : MonoBehaviour
@@ -15,10 +14,11 @@ public class PlayerBallAuthoring : MonoBehaviour
         // Override the Bake method to create the entity and add the components
         public override void Bake(PlayerBallAuthoring authoring)
         {
-            Entity ballAuthoring = GetEntity(TransformUsageFlags.None);
+            Entity playerBallEntity = GetEntity(TransformUsageFlags.None);
 
             // Adds a BallComponent component to the created entity.
-            AddComponent(ballAuthoring, new PlayerBallComponent{MoveSpeed = authoring.MoveSpeed});
+            AddComponent(playerBallEntity, new PlayerBallComponent{MoveSpeed = authoring.MoveSpeed});
+            AddComponent(playerBallEntity, new PlayerBallMovementComponent());
         }
     }
 }

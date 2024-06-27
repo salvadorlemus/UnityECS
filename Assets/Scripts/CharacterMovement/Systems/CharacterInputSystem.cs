@@ -8,7 +8,6 @@ using UnityEngine;
 [BurstCompile]
 public partial class CharacterInputSystem : SystemBase
 {
-
     // Reference to the Controls in the Input System
     private Controls _controls;
 
@@ -26,6 +25,7 @@ public partial class CharacterInputSystem : SystemBase
         foreach (var inputComponent in SystemAPI.Query<RefRW<InputComponent>>())
         {
             // Read the value of the Movement input from the controls as RW (Read / Write) so we can update it. 
+            // This does not apply any movement to the character, it just updates the input.
             inputComponent.ValueRW.Movement = _controls.Character.Move.ReadValue<Vector2>();
         }
     }

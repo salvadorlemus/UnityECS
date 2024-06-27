@@ -7,7 +7,7 @@ using Unity.Physics;
 [BurstCompile]
 public partial struct PlayerBallSystem : ISystem
 {
-    InputComponent inputComponent;
+    PlayerBallMovementComponent _playerBallMovementComponent;
 
     [BurstCompile]
     private void OnUpdate(ref SystemState state)
@@ -15,7 +15,7 @@ public partial struct PlayerBallSystem : ISystem
         EntityManager entityManager = state.EntityManager;
 
         // Ask for the inputComponent
-        if (!SystemAPI.TryGetSingleton(out inputComponent))
+        if (!SystemAPI.TryGetSingleton(out _playerBallMovementComponent))
             return;
 
         // NativeArray of entities in scene
@@ -33,8 +33,7 @@ public partial struct PlayerBallSystem : ISystem
                 RefRW<PhysicsVelocity> physicsVelocity = SystemAPI.GetComponentRW<PhysicsVelocity>(entity);
 
                 // Apply the movement to the physics velocity
-
-                physicsVelocity.ValueRW.Linear += new float3(inputComponent.Movement.x * playerBallComponent.MoveSpeed * SystemAPI.Time.DeltaTime, 0, inputComponent.Movement.y * playerBallComponent.MoveSpeed * SystemAPI.Time.DeltaTime);
+                physicsVelocity.ValueRW.Linear += new float3(_playerBallMovementComponent.Movement.x * playerBallComponent.MoveSpeed * SystemAPI.Time.DeltaTime, 0, _playerBallMovementComponent.Movement.y * playerBallComponent.MoveSpeed * SystemAPI.Time.DeltaTime);
             }
         }
 
