@@ -39,8 +39,12 @@ public partial struct TriggerSystem : ISystem
                 // List to hold all the collisions from the sphere cast
                 NativeList<ColliderCastHit> hits = new NativeList<ColliderCastHit>(Allocator.Temp);
 
-                // Cast an Sphere cast from the trigger position
-                physicsWorld.SphereCastAll(triggerTransform.ValueRO.Position, triggerComponent.ValueRO.SpherecastSize / 2,float3.zero, 1, ref hits, CollisionFilter.Default);
+                // Cast an Sphere cast from the trigger position on all objects
+                // physicsWorld.SphereCastAll(triggerTransform.ValueRO.Position, triggerComponent.ValueRO.SpherecastSize / 2,float3.zero, 1, ref hits, CollisionFilter.Default);
+
+                // Cast an Sphere cast from the trigger position on specific layers, in this case we are saying this object
+                // layer is Player and we want to collide only with Collectibles layered objects
+                physicsWorld.SphereCastAll(triggerTransform.ValueRO.Position, triggerComponent.ValueRO.SpherecastSize / 2,float3.zero, 1, ref hits, new CollisionFilter{ BelongsTo = (uint) CollisionLayer.Player, CollidesWith = (uint) CollisionLayer.Collectibles});
 
                 // Here we can filter collision based on components
                 foreach (ColliderCastHit hit in hits)
@@ -55,4 +59,10 @@ public partial struct TriggerSystem : ISystem
 
         entities.Dispose();
     }
+}
+
+public enum CollisionLayer
+{
+    Player = 1 << 3,   // 0000 0001 -> 0000 0100
+    Collectibles = 1 << 6, // 0000 0001 -> 010 0000
 }
